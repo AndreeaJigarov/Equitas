@@ -1,0 +1,24 @@
+/* src/theme.css */
+:root {
+  --dark-earth:   #63422C;
+  --mid-earth:    #A68A64;
+  --cream:        #EAE0D7;
+  --olive:        #656D4A;
+  --dark-olive:   #414833;
+  --white:        #FDFAF6;
+  --danger:       #8B2020;
+  --font-serif:   'Playfair Display', serif;
+  --font-sans:    'Lato', sans-serif;
+  --radius:       8px;
+  --shadow:       0 2px 8px rgba(62,39,35,0.10);
+  font-size: 18px;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: var(--noble-white);
+  color: var(--dark-earth);
+  font-family: 'Georgia', serif;
+}

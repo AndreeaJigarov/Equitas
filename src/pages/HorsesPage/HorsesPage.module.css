@@ -1,0 +1,40 @@
+
+.viewHeader {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+  min-height: 100px;   /* ← add this */
+}
+
+.splitWrapper {
+  display: flex;
+  flex: 1;
+  width: 100%;       /* Use full width */
+  height: calc(100vh - 64px);
+  min-height: 0;
+  overflow: hidden;
+}
+
+.leftPanel {
+  width: 30%;        /* Fluid width instead of 450px */
+  min-width: 350px;  /* Keeps the list readable on small screens */
+  max-width: 500px;  /* Limits growth on massive screens */
+  flex-shrink: 0;
+  border-right: 3px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  background: var(--cream);
+  overflow: hidden;
+  border-right: 2px solid var(--dark-earth);
+}
+
+.rightPanel {
+  flex: 1;           /* Naturally fills all remaining space */
+  display: flex;
+  flex-direction: column;
+  background: var(--cream);
+  overflow-y: auto;
+  min-width: 0;
+}

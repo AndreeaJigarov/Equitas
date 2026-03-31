@@ -1,0 +1,116 @@
+/* HomePage.module.css */
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.hero {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 70px 20px;
+  /* Use your horse image as a background  */
+  background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.6)), 
+              url('../../assets/backgroundHome.png') no-repeat; 
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.topBar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background: rgba(0, 0, 0, 0.6); /* Semi-transparent black */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 50px;
+  z-index: 10;
+  box-sizing: border-box;
+}
+
+
+
+.logoText {
+  font-family: var(--font-serif);
+  font-size: 84px;
+  color: #EDE0D4;
+  line-height: 1;
+  margin-top: 60px; 
+  font-weight: 300; 
+
+  -webkit-text-stroke: 0.5px black; /* 'Very thin' 0.5px black outline */
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3); /* Optional: adds subtle depth */
+
+}
+
+.tagline {
+  font-family: var(--font-serif);
+  font-size: 54px; 
+  color:  #EDE0D4;
+  max-width: 800px;
+  margin-bottom: 30px;
+  font-weight: 300; /* Makes the serif font thinner and more elegant */
+  line-height: 1.2;
+
+  -webkit-text-stroke: 0.5px black; /* 'Very thin' 0.5px black outline */
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3); /* Optional: adds subtle depth */
+}
+
+.ctaRow {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+/* Matching the brown buttons in your design  */
+.btnPrimary {
+  background: #8b5e3c; /* Specific brown from your image  */
+  color: var(--white);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  padding: 16px 60px;
+  font-size: 20px;
+  font-family: var(--font-serif);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.btnPrimary:hover {
+  transform: scale(1.05);
+  background: #7a4d2b;
+}
+
+.description {
+  max-width: 500px;
+  color: #EDE0D4;
+  font-size: 18px;
+  line-height: 1.5;
+  border-top: 2px solid #8b5e3c; /* Brown divider line  */
+  padding-top: 20px;
+
+  
+}
+
+/* The "Back to site" link in the top right  */
+.topLink {
+  color: var(--white);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 16px;
+  text-decoration: none;
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+.logoImage {
+  height: 90px; 
+}

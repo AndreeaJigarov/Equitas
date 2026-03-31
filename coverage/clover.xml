@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1774990139040" clover="3.2.0">
+  <project timestamp="1774990139041" name="All files">
+    <metrics statements="42" coveredstatements="42" conditionals="34" coveredconditionals="34" methods="13" coveredmethods="13" elements="89" coveredelements="89" complexity="0" loc="42" ncloc="42" packages="3" files="3" classes="3"/>
+    <package name="store">
+      <metrics statements="9" coveredstatements="9" conditionals="2" coveredconditionals="2" methods="11" coveredmethods="11"/>
+      <file name="useHorseStore.ts" path="C:\Users\Raton\Desktop\cursuri_si_seminare\MPP\Equitas\equitas-app\src\store\useHorseStore.ts">
+        <metrics statements="9" coveredstatements="9" conditionals="2" coveredconditionals="2" methods="11" coveredmethods="11"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="79" count="1" type="stmt"/>
+        <line num="89" count="1" type="stmt"/>
+        <line num="93" count="11" type="stmt"/>
+        <line num="98" count="3" type="stmt"/>
+        <line num="100" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="105" count="2" type="stmt"/>
+        <line num="106" count="3" type="stmt"/>
+        <line num="109" count="2" type="stmt"/>
+      </file>
+    </package>
+    <package name="types">
+      <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="Horse.ts" path="C:\Users\Raton\Desktop\cursuri_si_seminare\MPP\Equitas\equitas-app\src\types\Horse.ts">
+        <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      </file>
+    </package>
+    <package name="utils">
+      <metrics statements="33" coveredstatements="33" conditionals="32" coveredconditionals="32" methods="2" coveredmethods="2"/>
+      <file name="Validation.ts" path="C:\Users\Raton\Desktop\cursuri_si_seminare\MPP\Equitas\equitas-app\src\utils\Validation.ts">
+        <metrics statements="33" coveredstatements="33" conditionals="32" coveredconditionals="32" methods="2" coveredmethods="2"/>
+        <line num="6" count="21" type="stmt"/>
+        <line num="8" count="21" type="cond" truecount="2" falsecount="0"/>
+        <line num="9" count="2" type="stmt"/>
+        <line num="10" count="19" type="cond" truecount="2" falsecount="0"/>
+        <line num="11" count="1" type="stmt"/>
+        <line num="12" count="18" type="cond" truecount="2" falsecount="0"/>
+        <line num="13" count="1" type="stmt"/>
+        <line num="15" count="21" type="cond" truecount="2" falsecount="0"/>
+        <line num="16" count="1" type="stmt"/>
+        <line num="17" count="20" type="cond" truecount="2" falsecount="0"/>
+        <line num="18" count="1" type="stmt"/>
+        <line num="20" count="21" type="cond" truecount="4" falsecount="0"/>
+        <line num="21" count="1" type="stmt"/>
+        <line num="22" count="20" type="cond" truecount="4" falsecount="0"/>
+        <line num="23" count="2" type="stmt"/>
+        <line num="25" count="21" type="cond" truecount="2" falsecount="0"/>
+        <line num="26" count="1" type="stmt"/>
+        <line num="28" count="20" type="stmt"/>
+        <line num="29" count="20" type="stmt"/>
+        <line num="30" count="20" type="cond" truecount="2" falsecount="0"/>
+        <line num="31" count="1" type="stmt"/>
+        <line num="32" count="19" type="cond" truecount="2" falsecount="0"/>
+        <line num="33" count="1" type="stmt"/>
+        <line num="36" count="21" type="cond" truecount="2" falsecount="0"/>
+        <line num="37" count="1" type="stmt"/>
+        <line num="38" count="20" type="cond" truecount="2" falsecount="0"/>
+        <line num="39" count="1" type="stmt"/>
+        <line num="41" count="21" type="cond" truecount="2" falsecount="0"/>
+        <line num="42" count="1" type="stmt"/>
+        <line num="44" count="21" type="cond" truecount="2" falsecount="0"/>
+        <line num="45" count="1" type="stmt"/>
+        <line num="47" count="21" type="stmt"/>
+        <line num="51" count="2" type="stmt"/>
+      </file>
+    </package>
+  </project>
+</coverage>
