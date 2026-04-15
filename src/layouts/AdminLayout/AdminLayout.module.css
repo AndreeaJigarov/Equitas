@@ -7,8 +7,9 @@
 
 @media (max-width: 768px) {
     .adminWrapper {
-        flex-direction: column; /* Stacks NavBar on top of Content Area */
-        height: 100vh;
+        flex-direction: column;
+        height: 100dvh; /* Better for mobile Safari */
+        overflow: auto; /* Allow the wrapper to scroll if needed */
     }
 }
 

@@ -31,18 +31,19 @@
 /* GOLD CHALLENGE: Responsive Mobile Layout [cite: 219, 220] */
 @media (max-width: 768px) {
     .splitWrapper {
-        flex-direction: column; /* Stack vertically if needed */
-        height: auto;           /* Let it grow with content */
-        min-height: calc(100vh - 60px); /* Adjust based on mobile NavBar height */
+        flex-direction: column;
+        height: auto;
+        min-height: calc(100dvh - 60px); /* d-height avoids Safari UI issues */
+        overflow: visible;
     }
 
     .leftPanel,
     .rightPanel {
-        width: 100% !important;   /* Force full width [cite: 220] */
+        width: 100% !important;
         max-width: none !important;
         min-width: 0 !important;
-        border-right: none !important; /* Remove desktop border */
-        height: 100%;
+        border-right: none !important;
+        height: auto; /* Changed to auto to help Playwright visibility */
     }
 
     /* Ensure the header in detail view has breathing room on mobile */
