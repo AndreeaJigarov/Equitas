@@ -1,0 +1,108 @@
+/* AuthForm.module.css */
+
+.authContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    /* Use the darkened background from your design */
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+    url('../../assets/backgroundLoginRegister.png') no-repeat center center;
+    background-size: cover;
+}
+
+.authCard {
+    background: var(--cream); /* Exact cream color from reference */
+    padding: 3rem;
+    border-radius: 30px; /* High radius as seen in Figma */
+    box-shadow: 0 10px 50px rgba(0,0,0,0.2);
+    width: 50%;
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.authTitle {
+    font-family: var(--font-serif);
+    color: #4A3728; /* Dark brown */
+    font-size: 32px;
+    margin-bottom: 1.5rem;
+}
+
+.logoImage {
+    height: 60px;
+    margin-bottom: 1rem;
+}
+
+.topBar{
+    display: flex;
+    justify-content: center;
+}
+
+.fieldGroup {
+    width: 100%;
+    margin-bottom: 3rem;
+}
+
+.label {
+    display: block;
+    color: #4A3728;
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.input {
+    width: 100%;
+    padding: 12px;
+    border-radius: var(--radius-md);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px; /* Adjust this for space between columns/rows */
+    width: 100%;
+}
+
+.btnSubmit {
+    margin-top: 2rem; /* Increase this value to add more space above the button */
+    transition: background 0.3s;
+
+}
+
+.disclaimerBox {
+    width: 100%;
+    display: flex;
+    justify-content: center; /* Centers horizontally */
+    align-items: center;     /* Centers vertically */
+    margin-top: 2rem;        /* Replaces your <br> tags */
+    text-align: center;
+}
+
+.btnSubmit {
+    background-color: #8B5E3C; /* Specific brown from your design [cite: 65] */
+    color: #FFFFFF;
+    border: none;
+    padding: 12px 40px;        /* Wide, elegant shape */
+    border-radius: 25px;       /* Rounded "pill" shape */
+    font-family: var(--font-serif);
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 2rem;
+    transition: all 0.3s ease;
+    width: fit-content;        /* Prevents button from stretching to full width */
+}
+
+.btnSubmit:hover:not(:disabled) {
+    background-color: #6D4327; /* Darker brown on hover */
+    transform: translateY(-2px); /* Subtle lift effect */
+}
+
+.btnSubmit:disabled {
+    background-color: #C4B4A1; /* Muted color when disclaimer isn't checked */
+    cursor: not-allowed;
+    opacity: 0.7;
+}

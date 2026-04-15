@@ -12,12 +12,22 @@
 }
 
 /* Fix for the "Missing" Logo */
-.brand {
-    font-family: var(--font-serif);
-    font-size: 1.8rem;
-    color: var(--white); /* Ensures it shows up against dark-earth */
-    margin-bottom: 2.5rem;
-    font-weight: 700;
+/*.brand {*/
+/*    font-family: var(--font-serif);*/
+/*    font-size: 1.8rem;*/
+/*    color: var(--white); !* Ensures it shows up against dark-earth *!*/
+/*    margin-bottom: 2.5rem;*/
+/*    font-weight: 700;*/
+/*}*/
+
+.logoImage {
+    height: 80px;         /* Specific height for desktop */
+    width: auto;          /* Maintain aspect ratio */
+    max-width: 150px;     /* Ensure it never exceeds sidebar width */
+    object-fit: contain;  /* Prevents stretching */
+    margin-bottom: 2rem;
+    display: block;       /* Ensures it behaves as a block element */
+    transition: all 0.3s ease;
 }
 
 .nav {
@@ -48,9 +58,14 @@
 
 /* MOBILE RESPONSIVENESS (Up Mode) */
 @media (max-width: 768px) {
+    .logoImage {
+        height: 40px;     /* Smaller for mobile top-bar */
+        max-width: 100px;
+        margin-bottom: 0;
+    }
     .navbar {
+        height: 60px;
         width: 100%;
-        height: auto;
         flex-direction: row;
         padding: 0.8rem 1rem; /* Added safe padding from edges */
         justify-content: space-between;

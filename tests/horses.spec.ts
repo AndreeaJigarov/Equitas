@@ -3,10 +3,11 @@ import { test, expect } from '@playwright/test';
 // Skip every test in this file on Mobile Safari —
 // the responsive layout hides the horse list when a panel is open,
 // which requires a completely different interaction flow.
-test.skip(({ isMobile }) => isMobile, 'Mobile layout tested separately');
+//test.skip(({ isMobile }) => isMobile, 'Mobile layout tested separately');
 
 test.describe('Equitas Horse Management', () => {
-
+    // This block ONLY runs on desktop projects
+    test.skip(({ isMobile }) => isMobile, 'Mobile layout handled below');
     test.beforeEach(async ({ page }) => {
         await page.goto('/horses');
         await expect(page.getByRole('heading', { name: 'Horses' })).toBeVisible();
@@ -138,7 +139,7 @@ test.describe('Equitas Horse Management — mobile', () => {
         await expect(page.locator('[class*="viewName"]')).toBeVisible();
 
         // The "✕" button (mobileClose) sends the user back to the list
-        await page.locator('[class*="mobileClose"]').click();
+        await page.getByRole('button', { name: '✕' }).click();
 
         // The list should reappear
         await expect(page.locator('[class*="rowName"]').first()).toBeVisible();

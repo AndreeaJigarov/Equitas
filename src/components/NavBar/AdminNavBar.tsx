@@ -1,11 +1,13 @@
 import { NavLink } from 'react-router-dom';
 import styles from './Navbar.module.css';
+import logo_White from "../../assets/logo/logo_White.png";
 
 export const AdminNavbar = () => {
+
     return (
         <nav className={styles.navbar}>
             {/* Restore the Logo/Brand visibility */}
-            <div className={styles.brand}>Equitas</div>
+            <img src={logo_White} alt="Equitas Logo" className={styles.logoImage} />
 
             <div className={styles.nav}>
                 <NavLink
