@@ -1,9 +1,10 @@
-import { useState } from 'react';
-import { HorseTable } from '../../components/HorseTable/HorseTable';
-import { HorseDetailView } from '../../components/HorseDetailView/HorseDetailView';
+import { useState, useEffect } from 'react';
+import { HorseTable } from '../../components/HorsesComponents/HorseTable/HorseTable';
+import { HorseDetailView } from '../../components/HorsesComponents/HorseDetailView/HorseDetailView';
 import { useHorseStore } from '../../store/useHorseStore';
 import { type HorseFormData } from '../../types/Horse';
 import styles from './HorsesPage.module.css';
+import { setLastViewedHorseId, getLastViewedHorseId } from '../../utils/CookieUtils';
 
 export type PanelMode = 'none' | 'view' | 'edit' | 'add';
 
@@ -12,9 +13,34 @@ export const HorsesPage = () => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [mode, setMode] = useState<PanelMode>('none');
 
+
+
+  // --- COOKIE MONITORING LOGIC ---
+  // On mount, check if there is a "last viewed" horse preference in cookies 
+  useEffect(() => {
+    const savedId = getLastViewedHorseId();
+    if (savedId && getHorseById(savedId)) {
+      setSelectedId(savedId);
+      setMode('view');
+    }
+  }, []); // Only runs once on initial load
+
   const selectedHorse = selectedId ? getHorseById(selectedId) : undefined;
 
-  const handleSelectHorse = (id: string) => { setSelectedId(id); setMode('view'); };
+  // Modified to save preference whenever a user selects a horse 
+  const handleSelectHorse = (id: string) => { 
+    setSelectedId(id); 
+    setMode('view'); 
+    setLastViewedHorseId(id); // Monitor and save user activity 
+  };
+
+
+
+
+
+  // const selectedHorse = selectedId ? getHorseById(selectedId) : undefined;
+
+  // const handleSelectHorse = (id: string) => { setSelectedId(id); setMode('view'); };
   const handleAddNew = () => { setSelectedId(null); setMode('add'); };
   const handleEdit = () => { setMode('edit'); };
   const handleCancel = () => {

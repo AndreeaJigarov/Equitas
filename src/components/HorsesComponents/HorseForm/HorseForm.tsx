@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import {type Horse, type HorseFormData } from '../../types/Horse';
-import { validateHorse, isFormValid } from '../../utils/Validation';
+import {type Horse, type HorseFormData } from '../../../types/Horse';
+import { validateHorse, isFormValid } from '../../../utils/Validation';
 import styles from './HorseForm.module.css';
 
 interface HorseFormProps {
@@ -234,8 +234,9 @@ export const HorseForm = ({ initial, onSubmit, onCancel }: HorseFormProps) => {
             </label>
           </div>
         </div>
+        </div>
 
-        {/* No guidance needed */}
+        {/* No guidance needed
         <div className={`${styles.field} ${styles.fieldFull}`}>
           <span className={styles.label}>No guidance needed for</span>
           <div className={styles.checkRow}>
@@ -247,7 +248,7 @@ export const HorseForm = ({ initial, onSubmit, onCancel }: HorseFormProps) => {
             ))}
           </div>
         </div>
-      </div>
+      // </div> */}
 
       <div className={styles.formFooter}>
         <button type="button" className={styles.btnCancel} onClick={onCancel}>
@@ -258,5 +259,6 @@ export const HorseForm = ({ initial, onSubmit, onCancel }: HorseFormProps) => {
         </button>
       </div>
     </form>
+
   );
 };

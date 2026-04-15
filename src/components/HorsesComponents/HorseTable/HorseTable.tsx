@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { type Horse } from '../../types/Horse';
+import { type Horse } from '../../../types/Horse';
 import styles from './HorseTable.module.css';
 
 interface HorseTableProps {
@@ -9,12 +9,12 @@ interface HorseTableProps {
   onAddNew: () => void;
 }
 
-const PAGE_SIZE = 6; // How many horses to show at once [cite: 217]
+const PAGE_SIZE = 6; // How many horses to show at once
 
 export const HorseTable = ({ horses, selectedId, onSelect, onAddNew }: HorseTableProps) => {
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Pagination Logic [cite: 230, 232]
+  // Pagination Logic
   const totalPages = Math.max(1, Math.ceil(horses.length / PAGE_SIZE));
   const startIndex = (currentPage - 1) * PAGE_SIZE;
   const paginatedHorses = horses.slice(startIndex, startIndex + PAGE_SIZE);
@@ -28,7 +28,7 @@ export const HorseTable = ({ horses, selectedId, onSelect, onAddNew }: HorseTabl
 
       <div className={styles.list}>
         {paginatedHorses.length === 0 ? (
-          <div className={styles.empty}>No horses yet. [cite: 152, 287]</div>
+          <div className={styles.empty}>No horses yet.</div>
         ) : (
           paginatedHorses.map((horse) => (
             <div
@@ -53,7 +53,7 @@ export const HorseTable = ({ horses, selectedId, onSelect, onAddNew }: HorseTabl
         )}
       </div>
 
-      {/* Simple Pagination Controls Footer [cite: 159, 330] */}
+      {/* Simple Pagination Controls Footer */}
       <div className={styles.pagination}>
         <button 
           className={styles.pageBtn} 
