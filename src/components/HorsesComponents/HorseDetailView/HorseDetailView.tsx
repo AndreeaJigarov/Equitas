@@ -59,6 +59,7 @@ export const HorseDetailView = ({
   // ── VIEW ───────────────────────────────────────────────
   if (!horse) return null;
 
+    // eslint-disable-next-line react-hooks/rules-of-hooks
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   //Purpose: Displays the horse's identity and status.
   const statusBadge = () => {

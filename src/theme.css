@@ -7,6 +7,10 @@
   --dark-olive:   #414833;
   --white:        #FDFAF6;
   --danger:       #8B2020;
+  --text-muted: #6b7280;
+  --text-dark:  #3e2723;
+  --border:     #d1d5db;
+  --radius-md:  8px;
   --font-serif:   'Playfair Display', serif;
   --font-sans:    'Lato', sans-serif;
   --radius:       8px;
@@ -18,7 +22,7 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  background-color: var(--noble-white);
+  background-color: var(--cream);
   color: var(--dark-earth);
   font-family: 'Georgia', serif;
 }

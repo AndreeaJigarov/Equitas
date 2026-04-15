@@ -236,19 +236,6 @@ export const HorseForm = ({ initial, onSubmit, onCancel }: HorseFormProps) => {
         </div>
         </div>
 
-        {/* No guidance needed
-        <div className={`${styles.field} ${styles.fieldFull}`}>
-          <span className={styles.label}>No guidance needed for</span>
-          <div className={styles.checkRow}>
-            {(['leisure', 'training', 'competition'] as const).map((key) => (
-              <label key={key} className={styles.checkItem}>
-        
-                {key.charAt(0).toUpperCase() + key.slice(1)}
-              </label>
-            ))}
-          </div>
-        </div>
-      // </div> */}
 
       <div className={styles.formFooter}>
         <button type="button" className={styles.btnCancel} onClick={onCancel}>
