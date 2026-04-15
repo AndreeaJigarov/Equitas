@@ -1,13 +1,21 @@
+/* AdminLayout.module.css */
 .adminWrapper {
-  display: flex;
-  height: 100vh;
-  overflow: hidden;
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+@media (max-width: 768px) {
+    .adminWrapper {
+        flex-direction: column; /* Stacks NavBar on top of Content Area */
+        height: 100vh;
+    }
 }
 
 .contentArea {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  min-width: 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-width: 0;
 }

@@ -75,27 +75,33 @@ export const HorseDetailView = ({
     return Math.floor(diff / (1000 * 60 * 60 * 24 * 365));
   };
 
-  return (
-    <div className={styles.viewPanel}>
-      {/* Header */}
-      <div className={styles.viewHeader}>
-        <div className={styles.avatarLarge}>
-          {horse.name.charAt(0).toUpperCase()}
-        </div>
-        <div className={styles.viewHeaderInfo}>
-          <h2 className={styles.viewName}>{horse.name}</h2>
-          <p className={styles.viewId}>ID: #{horse.id}</p>
-          <div className={styles.badgeRow}>
-            <span className={`${styles.badge} ${diffBadge(horse.difficulty)}`}>
-              {horse.difficulty}
-            </span>
-            {statusBadge()}
-            <span className={`${styles.badge} ${styles.badgeNeutral}`}>
-              {horse.recommendedFor === 'Both' ? 'All riders' : horse.recommendedFor}
-            </span>
-          </div>
-        </div>
-      </div>
+// Inside HorseDetailView.tsx -> VIEW section
+    return (
+        <div className={styles.viewPanel}>
+            {/* Header - UPDATED FOR GOLD RESPONSIVENESS */}
+            <div className={styles.viewHeader}>
+                <div className={styles.avatarLarge}>
+                    {horse.name.charAt(0).toUpperCase()}
+                </div>
+                <div className={styles.viewHeaderInfo}>
+                    <h2 className={styles.viewName}>{horse.name}</h2>
+                    <p className={styles.viewId}>ID: #{horse.id}</p>
+                    <div className={styles.badgeRow}>
+          <span className={`${styles.badge} ${diffBadge(horse.difficulty)}`}>
+            {horse.difficulty}
+          </span>
+                        {statusBadge()}
+                        <span className={`${styles.badge} ${styles.badgeNeutral}`}>
+            {horse.recommendedFor === 'Both' ? 'All riders' : horse.recommendedFor}
+          </span>
+                    </div>
+                </div>
+
+                {/* NEW: Mobile-only Close Button for Gold Challenge */}
+                <button className={styles.mobileClose} onClick={onCancel}>✕</button>
+            </div>
+
+
 
       {/* Fields */}
       <div className={styles.fields}>
@@ -203,108 +209,111 @@ const InlineForm = ({ initial, isEdit, onSubmit, onCancel }: FormProps) => {
   const fc = (name: string) =>
     `${styles.input} ${touched[name] && errors[name] ? styles.inputError : ''}`;
 
-  return (
-    <form className={styles.formPanel} onSubmit={handleSubmit} noValidate>
+    return (
+        <form className={styles.formPanel} onSubmit={handleSubmit} noValidate>
 
-      {/* HEADER — mirrors viewHeader */}
-      <div className={styles.viewHeader}>
-        <div className={styles.formAvatarPlaceholder}>
-          {isEdit && initial
-            ? <span className={styles.formAvatarLetter}>{initial.name.charAt(0).toUpperCase()}</span>
-            : <span className={styles.formAvatarIcon}>+</span>
-          }
-        </div>
-        <div className={styles.viewHeaderInfo}>
-          {/* Name field — replaces the big horse name */}
-          <input
-            id="name"
-            name="name"
-            className={`${styles.nameInput} ${touched.name && errors.name ? styles.inputError : ''}`}
-            value={form.name}
-            onChange={handleChange}
-            onBlur={() => handleBlur('name')}
-            placeholder="Horse name..."
-          />
-          {touched.name && errors.name && <span className={styles.errMsg}>{errors.name}</span>}
+            {/* HEADER — mirrors viewHeader */}
+            <div className={styles.viewHeader}>
+                <div className={styles.formAvatarPlaceholder}>
+                    {isEdit && initial
+                        ? <span className={styles.formAvatarLetter}>{initial.name.charAt(0).toUpperCase()}</span>
+                        : <span className={styles.formAvatarIcon}>+</span>
+                    }
+                </div>
+                <div className={styles.viewHeaderInfo}>
+                    {/* Name field — replaces the big horse name */}
+                    <input
+                        id="name"
+                        name="name"
+                        className={`${styles.nameInput} ${touched.name && errors.name ? styles.inputError : ''}`}
+                        value={form.name}
+                        onChange={handleChange}
+                        onBlur={() => handleBlur('name')}
+                        placeholder="Horse name..."
+                    />
+                    {touched.name && errors.name && <span className={styles.errMsg}>{errors.name}</span>}
 
-          {/* ID line */}
-          <p className={styles.viewId}>
-            {isEdit ? `ID: #${initial?.id}` : 'ID: auto-generated'}
-          </p>
+                    {/* ID line */}
+                    <p className={styles.viewId}>
+                        {isEdit ? `ID: #${initial?.id}` : 'ID: auto-generated'}
+                    </p>
 
-          {/* Difficulty + Recommended for as selects — replaces badges */}
-          <div className={styles.badgeRow}>
-            <select name="difficulty" className={styles.selectBadge} value={form.difficulty} onChange={handleChange}>
-              <option value="Easy">Easy</option>
-              <option value="Medium">Medium</option>
-              <option value="Hard">Hard</option>
-            </select>
-            <select name="recommendedFor" className={styles.selectBadge} value={form.recommendedFor} onChange={handleChange}>
-              <option value="Children">Children</option>
-              <option value="Adults">Adults</option>
-              <option value="Both">Both</option>
-            </select>
-            <label className={styles.checkItemInline}>
-              <input type="checkbox" name="isAvailable" checked={form.isAvailable} onChange={handleChange} />
-              Available
-            </label>
-            <label className={styles.checkItemInline}>
-              <input type="checkbox" name="inTraining" checked={form.inTraining} onChange={handleChange} />
-              In training
-            </label>
-          </div>
-        </div>
-      </div>
+                    {/* Difficulty + Recommended for as selects — replaces badges */}
+                    <div className={styles.badgeRow}>
+                        <select name="difficulty" className={styles.selectBadge} value={form.difficulty} onChange={handleChange}>
+                            <option value="Easy">Easy</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Hard">Hard</option>
+                        </select>
+                        <select name="recommendedFor" className={styles.selectBadge} value={form.recommendedFor} onChange={handleChange}>
+                            <option value="Children">Children</option>
+                            <option value="Adults">Adults</option>
+                            <option value="Both">Both</option>
+                        </select>
+                        <label className={styles.checkItemInline}>
+                            <input type="checkbox" name="isAvailable" checked={form.isAvailable} onChange={handleChange} />
+                            Available
+                        </label>
+                        <label className={styles.checkItemInline}>
+                            <input type="checkbox" name="inTraining" checked={form.inTraining} onChange={handleChange} />
+                            In training
+                        </label>
+                    </div>
+                </div>
 
-      {/* FIELDS — mirrors .fields grid */}
-      <div className={styles.fields}>
-        <div className={styles.field}>
-          <span className={styles.fieldLabel}>Breed *</span>
-          <input name="breed" className={fc('breed')} value={form.breed}
-            onChange={handleChange} onBlur={() => handleBlur('breed')} placeholder="e.g. Andalusian" />
-          {touched.breed && errors.breed && <span className={styles.errMsg}>{errors.breed}</span>}
-        </div>
+                {/* NEW: Mobile-only Close Button for Gold Challenge responsiveness */}
+                <button type="button" className={styles.mobileClose} onClick={onCancel}>✕</button>
+            </div>
 
-        <div className={styles.field}>
-          <span className={styles.fieldLabel}>Weight (kg) *</span>
-          <input name="weight" type="number" className={fc('weight')}
-            value={form.weight || ''} onChange={handleChange} onBlur={() => handleBlur('weight')}
-            placeholder="200–900" min={200} max={900} />
-          {touched.weight && errors.weight && <span className={styles.errMsg}>{errors.weight}</span>}
-        </div>
+            {/* FIELDS — mirrors .fields grid */}
+            <div className={styles.fields}>
+                <div className={styles.field}>
+                    <span className={styles.fieldLabel}>Breed *</span>
+                    <input name="breed" className={fc('breed')} value={form.breed}
+                           onChange={handleChange} onBlur={() => handleBlur('breed')} placeholder="e.g. Andalusian" />
+                    {touched.breed && errors.breed && <span className={styles.errMsg}>{errors.breed}</span>}
+                </div>
 
-        <div className={styles.field}>
-          <span className={styles.fieldLabel}>Date of birth *</span>
-          <input name="dateOfBirth" type="date" className={fc('dateOfBirth')}
-            value={form.dateOfBirth} onChange={handleChange} onBlur={() => handleBlur('dateOfBirth')}
-            max={new Date().toISOString().split('T')[0]} />
-          {touched.dateOfBirth && errors.dateOfBirth && <span className={styles.errMsg}>{errors.dateOfBirth}</span>}
-        </div>
+                <div className={styles.field}>
+                    <span className={styles.fieldLabel}>Weight (kg) *</span>
+                    <input name="weight" type="number" className={fc('weight')}
+                           value={form.weight || ''} onChange={handleChange} onBlur={() => handleBlur('weight')}
+                           placeholder="200–900" min={200} max={900} />
+                    {touched.weight && errors.weight && <span className={styles.errMsg}>{errors.weight}</span>}
+                </div>
 
-        <div className={styles.field}>
-          <span className={styles.fieldLabel}>Age</span>
-          <input className={styles.input} disabled placeholder="Calculated from date of birth"
-            style={{ opacity: 0.45, cursor: 'not-allowed' }} />
-        </div>
+                <div className={styles.field}>
+                    <span className={styles.fieldLabel}>Date of birth *</span>
+                    <input name="dateOfBirth" type="date" className={fc('dateOfBirth')}
+                           value={form.dateOfBirth} onChange={handleChange} onBlur={() => handleBlur('dateOfBirth')}
+                           max={new Date().toISOString().split('T')[0]} />
+                    {touched.dateOfBirth && errors.dateOfBirth && <span className={styles.errMsg}>{errors.dateOfBirth}</span>}
+                </div>
 
-        <div className={styles.fieldFull}>
-          <span className={styles.fieldLabel}>About *</span>
-          <textarea name="about"
-            className={`${styles.aboutTextarea} ${touched.about && errors.about ? styles.inputError : ''}`}
-            value={form.about} onChange={handleChange} onBlur={() => handleBlur('about')}
-            placeholder="Temperament and abilities of the horse..." />
-          {touched.about && errors.about && <span className={styles.errMsg}>{errors.about}</span>}
-        </div>
-      </div>
+                <div className={styles.field}>
+                    <span className={styles.fieldLabel}>Age</span>
+                    <input className={styles.input} disabled placeholder="Calculated from date of birth"
+                           style={{ opacity: 0.45, cursor: 'not-allowed' }} />
+                </div>
 
-      {/* FOOTER — same as viewFooter */}
-      <div className={styles.viewFooter}>
-        <button type="button" className={styles.btnDelete} onClick={onCancel}>Cancel</button>
-        <button type="submit" className={styles.btnEdit}>
-          {isEdit ? 'Save changes' : 'Add horse'}
-        </button>
-      </div>
+                <div className={styles.fieldFull}>
+                    <span className={styles.fieldLabel}>About *</span>
+                    <textarea name="about"
+                              className={`${styles.aboutTextarea} ${touched.about && errors.about ? styles.inputError : ''}`}
+                              value={form.about} onChange={handleChange} onBlur={() => handleBlur('about')}
+                              placeholder="Temperament and abilities of the horse..." />
+                    {touched.about && errors.about && <span className={styles.errMsg}>{errors.about}</span>}
+                </div>
+            </div>
 
-    </form>
-  );
+            {/* FOOTER — same as viewFooter */}
+            <div className={styles.viewFooter}>
+                <button type="button" className={styles.btnDelete} onClick={onCancel}>Cancel</button>
+                <button type="submit" className={styles.btnEdit}>
+                    {isEdit ? 'Save changes' : 'Add horse'}
+                </button>
+            </div>
+
+        </form>
+    );
 };

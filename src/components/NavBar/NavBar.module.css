@@ -1,35 +1,81 @@
+/* Navbar.module.css */
+
 .navbar {
-  background-color: var(--dark-earth);
-  width: 15vw;       /* Changed from 200px to 15% of the viewport width */
-  min-width: 160px;  /* Prevents it from getting too thin */
-  max-width: 240px;  /* Prevents it from getting too wide */
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 2.5rem 0; /* Use rem for responsive padding */
-  position: sticky;
-  top: 0;
+    background-color: var(--dark-earth);
+    width: 15vw;
+    min-width: 180px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column; /* Desktop: Vertical stack */
+    align-items: center;
+    padding: 2.5rem 0;
+}
+
+/* Fix for the "Missing" Logo */
+.brand {
+    font-family: var(--font-serif);
+    font-size: 1.8rem;
+    color: var(--white); /* Ensures it shows up against dark-earth */
+    margin-bottom: 2.5rem;
+    font-weight: 700;
 }
 
 .nav {
-  display: flex;
-  flex-direction: column; /* Links stack vertically */
-  gap: 20px;
-  width: 100%;
-  margin-top: 40px;
+    display: flex;
+    flex-direction: column; /* Desktop: Links one below the other */
+    gap: 15px;
+    width: 100%;
 }
 
 .navLink {
-  color: var(--cream);
-  text-decoration: none;
-  padding: 12px 20px;
-  width: 100%;
-  text-align: center;
-  box-sizing: border-box;
+    color: var(--cream);
+    text-decoration: none;
+    padding: 12px 24px;
+    text-align: center;
+    transition: all 0.2s ease;
+    font-family: var(--font-sans);
 }
 
+.navLink:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Active state for Silver/Gold polish */
 .navLink.active {
-  background: rgba(166, 138, 100, 0.3); /* Transparent mid-earth highlight */
-  border-left: 4px solid var(--gold); /* */
+    background: rgba(166, 138, 100, 0.3);
+    border-left: 4px solid var(--mid-earth);
+}
+
+/* MOBILE RESPONSIVENESS (Up Mode) */
+@media (max-width: 768px) {
+    .navbar {
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        padding: 0.8rem 1rem; /* Added safe padding from edges */
+        justify-content: space-between;
+        align-items: center;
+        box-sizing: border-box; /* Crucial: ensures padding doesn't add to width */
+    }
+
+    .brand {
+        margin-bottom: 0;
+        font-size: 1.3rem; /* Slightly smaller to save space */
+        flex-shrink: 0;   /* Prevents the logo from squishing */
+    }
+
+    .nav {
+        flex-direction: row;
+        width: auto;
+        gap: 12px;       /* Reduced gap for mobile bounds */
+        margin-top: 0;
+        margin-left: auto; /* Pushes links to the right with breathing room */
+    }
+
+    .navLink {
+        padding: 6px 10px; /* Slimmer padding for mobile */
+        font-size: 0.95rem; /* Slightly smaller text for better fit */
+        width: auto;
+        white-space: nowrap; /* Prevents text from wrapping into 2 lines */
+    }
 }

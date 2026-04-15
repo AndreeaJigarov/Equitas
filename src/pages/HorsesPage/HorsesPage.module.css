@@ -1,40 +1,53 @@
-
-.viewHeader {
-  display: flex;
-  gap: 18px;
-  align-items: center;
-  padding-bottom: 20px;
-  border-bottom: 1px solid var(--border);
-  min-height: 100px;   /* ← add this */
-}
-
 .splitWrapper {
-  display: flex;
-  flex: 1;
-  width: 100%;       /* Use full width */
-  height: calc(100vh - 64px);
-  min-height: 0;
-  overflow: hidden;
+    display: flex;
+    flex: 1;
+    width: 100%;
+    height: calc(100vh - 64px); /* Desktop height minus Sidebar/TopNav */
+    min-height: 0;
+    overflow: hidden;
 }
 
 .leftPanel {
-  width: 30%;        /* Fluid width instead of 450px */
-  min-width: 350px;  /* Keeps the list readable on small screens */
-  max-width: 500px;  /* Limits growth on massive screens */
-  flex-shrink: 0;
-  border-right: 3px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  background: var(--cream);
-  overflow: hidden;
-  border-right: 2px solid var(--dark-earth);
+    width: 40%;
+    min-width: 350px;
+    max-width: 500px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    background: var(--cream);
+    overflow: hidden;
+    border-right: 2px solid var(--dark-earth);
 }
 
 .rightPanel {
-  flex: 1;           /* Naturally fills all remaining space */
-  display: flex;
-  flex-direction: column;
-  background: var(--cream);
-  overflow-y: auto;
-  min-width: 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: var(--cream);
+    overflow-y: auto;
+    min-width: 0;
+}
+
+/* GOLD CHALLENGE: Responsive Mobile Layout [cite: 219, 220] */
+@media (max-width: 768px) {
+    .splitWrapper {
+        flex-direction: column; /* Stack vertically if needed */
+        height: auto;           /* Let it grow with content */
+        min-height: calc(100vh - 60px); /* Adjust based on mobile NavBar height */
+    }
+
+    .leftPanel,
+    .rightPanel {
+        width: 100% !important;   /* Force full width [cite: 220] */
+        max-width: none !important;
+        min-width: 0 !important;
+        border-right: none !important; /* Remove desktop border */
+        height: 100%;
+    }
+
+    /* Ensure the header in detail view has breathing room on mobile */
+    .viewHeader {
+        padding: 1.5rem;
+        min-height: 80px;
+    }
 }
