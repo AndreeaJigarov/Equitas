@@ -1,0 +1,59 @@
+.statsContainer {
+    padding: 2rem;
+    background: var(--cream); /* Traditional English style [cite: 294] */
+    min-height: 100%;
+}
+
+.title {
+    font-family: var(--font-serif);
+    color: var(--dark-earth);
+    margin-bottom: 2rem;
+}
+
+.chartGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Parallel views side-by-side  */
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.chartCard {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    text-align: center;
+}
+
+.placeholderChart {
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fdfaf5;
+    border: 2px dashed #dcd0c0;
+    color: var(--dark-earth);
+}
+.footer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-top: 2rem;    /* Space between the charts and the button */
+    padding-bottom: 4rem; /* Increases the gap between the button and the screen border */
+    margin-top: auto;     /* Ensures it stays below the content area */
+}
+.btnGenerate {
+    background: #8b5e3c; /* Brown button from design  */
+    color: white;
+    padding: 12px 30px;
+    border-radius: 25px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+
+}
+
+@media (max-width: 900px) {
+    .chartGrid { grid-template-columns: 1fr; } /* Responsive for Gold  */
+}

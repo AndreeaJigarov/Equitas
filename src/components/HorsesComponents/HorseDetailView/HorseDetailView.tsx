@@ -3,6 +3,8 @@ import { type Horse, type HorseFormData, type Difficulty } from '../../../types/
 import { validateHorse, isFormValid } from '../../../utils/Validation';
 import { type PanelMode } from '../../../pages/HorsesPage/HorsesPage';
 import styles from './HorseDetailView.module.css';
+import { getHorseViewCount } from '../../../utils/CookieUtils';
+import {AnimatedHorse} from "../AnimatedHorse/AnimatedHorse.tsx";
 
 // This component handles the right-side panel of the Horses page, showing either:
 // - an empty state when no horse is selected
@@ -35,7 +37,8 @@ export const HorseDetailView = ({
   if (mode === 'none') {
     return (
       <div className={styles.empty}>
-        <div className={styles.emptyIcon}>🐴</div>
+        {/*<div className={styles.emptyIcon}>🐴</div>*/}
+        <AnimatedHorse />
         <p className={styles.emptyText}>Select a horse to view details</p>
         <p className={styles.emptySub}>or use "add new +" to create one</p>
       </div>
@@ -58,6 +61,7 @@ export const HorseDetailView = ({
 
   // ── VIEW ───────────────────────────────────────────────
   if (!horse) return null;
+    const views = horse ? getHorseViewCount(horse.id) : 0;
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -85,7 +89,7 @@ export const HorseDetailView = ({
                 </div>
                 <div className={styles.viewHeaderInfo}>
                     <h2 className={styles.viewName}>{horse.name}</h2>
-                    <p className={styles.viewId}>ID: #{horse.id}</p>
+                    <p className={styles.viewId}>ID: #{horse.id} • {views} views</p>
                     <div className={styles.badgeRow}>
           <span className={`${styles.badge} ${diffBadge(horse.difficulty)}`}>
             {horse.difficulty}

@@ -9,10 +9,18 @@ interface LoginProps {
 export const LoginForm = ({ onLogin }: LoginProps) => {
     const [mobile, setMobile] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        // Authentication logic based on mobile number
+        if (!mobile || !password) {
+            setError('Mobile and Password are required.');
+            return;
+        }
+        if (!/^\d{10}$/.test(mobile)) {
+            setError('Please enter a valid 10-digit mobile number.');
+            return;
+        }
         onLogin();
     };
 
@@ -24,26 +32,28 @@ export const LoginForm = ({ onLogin }: LoginProps) => {
                     <img src={logo_lightBrown} alt="Equitas Logo" className={styles.logoImage} />
                 </div>
 
-                <div className={styles.field}>
+                <div className={styles.fieldGroup}>
                     <label className={styles.label}>Mobile Number</label>
                     <input
                         type="text"
                         className={styles.input}
                         value={mobile}
-                        onChange={(e) => setMobile(e.target.value)}
+                        onChange={(e) => {setMobile(e.target.value); setError('');}}
                         placeholder="e.g. 07xxxxxxxx"
                     />
                 </div>
-                <br></br>
-                <div className={styles.field}>
+                <div className={styles.fieldGroup}>
                     <label className={styles.label}>Password</label>
                     <input
                         type="password"
                         className={styles.input}
                         value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        onChange={(e) => {setPassword(e.target.value); setError('');}}
                     />
                 </div>
+
+                {error && <p className={styles.errorText}>{error}</p>}
+
                 <button type="submit" className={styles.btnSubmit}>Sign In</button>
             </form>
         </div>

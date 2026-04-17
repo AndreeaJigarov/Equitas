@@ -1,8 +1,17 @@
-import { NavLink } from 'react-router-dom';
+import {NavLink, useNavigate} from 'react-router-dom';
 import styles from './Navbar.module.css';
 import logo_White from "../../assets/logo/logo_White.png";
 
 export const AdminNavbar = () => {
+
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+
+        document.cookie = "sessionStart=; max-age=0; path=/; SameSite=Strict";
+        document.cookie = "lastHorseId=; max-age=0; path=/; SameSite=Strict";
+        navigate('/');
+    };
 
     return (
         <nav className={styles.navbar}>
@@ -27,6 +36,17 @@ export const AdminNavbar = () => {
                 >
                     Horses
                 </NavLink>
+                <NavLink
+                    to="/statistics"
+                    className={({ isActive }) => `${styles.navLink} ${isActive ? styles.active : ''}`}
+                >
+                    Statistics
+                </NavLink>
+
+                <button onClick={handleLogout} className={styles.logoutBtn}>
+                    Logout
+                </button>
+
             </div>
         </nav>
     );

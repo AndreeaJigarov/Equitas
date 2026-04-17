@@ -1,0 +1,37 @@
+/* components/HorsesComponents/AnimatedHorse/AnimatedHorse.module.css */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    pointer-events: none; /* Prevents interference with clicks */
+}
+
+.horseIcon {
+    font-size: 5rem;
+    display: inline-block;
+    filter: drop-shadow(0 10px 15px rgba(139, 94, 60, 0.2));
+    /* The core "BE COOL" animation */
+    animation: gallop 1.5s ease-in-out infinite;
+}
+
+.shadow {
+    width: 50px;
+    height: 10px;
+    background: rgba(139, 94, 60, 0.15); /* Soft brown shadow */
+    border-radius: 50%;
+    margin-top: 15px;
+    animation: shadowPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes gallop {
+    0%, 100% { transform: translateY(0) rotate(-5deg); }
+    50% { transform: translateY(-25px) rotate(10deg); }
+}
+
+@keyframes shadowPulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.6); opacity: 0.1; }
+}

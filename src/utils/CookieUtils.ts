@@ -1,4 +1,4 @@
-// src/utils/CookieUtils.ts
+
 
 /**
  * Saves the selected horse ID to a cookie so it persists on refresh.
@@ -29,4 +29,19 @@ export const getHorseViewCount = (id: string): number => {
   const key = `viewCount_${id}`;
   const match = document.cookie.match(new RegExp(`(^| )${key}=([^;]+)`));
   return match ? parseInt(match[2]) : 0;
+};
+
+export const setSessionStart = () => {
+    // Stores when the user logged in/started the session
+    if (!document.cookie.includes('sessionStart')) {
+        document.cookie = `sessionStart=${Date.now()}; path=/; SameSite=Strict`;
+    }
+};
+
+export const getSessionDuration = (): string => {
+    const match = document.cookie.match(new RegExp('(^| )sessionStart=([^;]+)'));
+    if (!match) return "0m";
+    const durationMs = Date.now() - parseInt(match[2]);
+    const minutes = Math.floor(durationMs / 60000);
+    return `${minutes}m`;
 };

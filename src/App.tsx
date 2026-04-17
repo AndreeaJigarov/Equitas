@@ -5,20 +5,22 @@ import { HorsesPage } from './pages/HorsesPage/HorsesPage';
 import './theme.css';
 import {RegisterPage} from "./pages/AuthPages/RegisterPage.tsx";
 import {LoginPage} from "./pages/AuthPages/LoginPage.tsx";
+import {StatisticsPage} from "./pages/StatisticsPage/StatisticsPage.tsx";
 
 function App() {
-  return (
+    return (
 
       <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
+            <Route path="/" element={<HomePage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
         <Route element={<AdminLayout />}>
-          <Route path="/horses" element={<HorsesPage />} />
+            <Route path="/horses" element={<HorsesPage />} />
+            <Route path="/statistics" element={<StatisticsPage />} />
         </Route>
       </Routes>
 
-  );
+    );
 }
 
 export default App;

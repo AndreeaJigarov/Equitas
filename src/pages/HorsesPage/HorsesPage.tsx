@@ -4,7 +4,7 @@ import { HorseDetailView } from '../../components/HorsesComponents/HorseDetailVi
 import { useHorseStore } from '../../store/useHorseStore';
 import { type HorseFormData } from '../../types/Horse';
 import styles from './HorsesPage.module.css';
-import { setLastViewedHorseId, getLastViewedHorseId } from '../../utils/CookieUtils';
+import { setLastViewedHorseId, getLastViewedHorseId, incrementHorseViewCount } from '../../utils/CookieUtils';
 
 export type PanelMode = 'none' | 'view' | 'edit' | 'add';
 
@@ -39,6 +39,7 @@ export const HorsesPage = () => {
         setSelectedId(id);
         setMode('view');
         setLastViewedHorseId(id); // Existing Silver activity monitoring
+        incrementHorseViewCount(id);
     };
 
 
@@ -57,6 +58,8 @@ export const HorsesPage = () => {
         // disappears and the HorseTable reappears on mobile.
         setMode('none');
         setSelectedId(null);
+        // 2. Clear the cookie so it doesn't reopen automatically on refresh
+        document.cookie = "lastHorseId=; max-age=0; path=/; SameSite=Strict";
     };
   const handleSubmitAdd = (data: HorseFormData) => {
     addHorse(data); setMode('none'); setSelectedId(null);

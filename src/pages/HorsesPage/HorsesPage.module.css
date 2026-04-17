@@ -9,6 +9,7 @@
 
 .leftPanel {
     width: 40%;
+    height: 100%;
     min-width: 350px;
     max-width: 500px;
     flex-shrink: 0;
@@ -46,9 +47,11 @@
         height: auto; /* Changed to auto to help Playwright visibility */
     }
 
+
+
     /* Ensure the header in detail view has breathing room on mobile */
     .viewHeader {
-        padding: 1.5rem;
+        padding: 0.8rem;
         min-height: 80px;
     }
 }
