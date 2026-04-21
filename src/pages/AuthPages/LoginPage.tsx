@@ -6,7 +6,7 @@ export const LoginPage = () => {
 
     const handleLoginSuccess = () => {
         // In Assignment 1, we just redirect to the horses list
-        navigate('/horses');
+        navigate('/home');
     };
 
     return (

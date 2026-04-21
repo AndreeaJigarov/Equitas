@@ -13,12 +13,12 @@
     font-size: 5rem;
     display: inline-block;
     filter: drop-shadow(0 10px 15px rgba(139, 94, 60, 0.2));
-    /* The core "BE COOL" animation */
+
     animation: gallop 1.5s ease-in-out infinite;
 }
 
 .shadow {
-    width: 50px;
+    width: 70px;
     height: 10px;
     background: rgba(139, 94, 60, 0.15); /* Soft brown shadow */
     border-radius: 50%;
