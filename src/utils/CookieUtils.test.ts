@@ -13,7 +13,7 @@ const clearAllCookies = () => {
     document.cookie.split(';').forEach((c) => {
         const key = c.split('=')[0].trim();
         document.cookie = `${key}=; max-age=0; path=/`;
-    });
+    }); 
 };
 
 describe('CookieUtils', () => {
