@@ -33,9 +33,8 @@ export const getHorseViewCount = (id: string): number => {
 
 export const setSessionStart = () => {
     // Stores when the user logged in/started the session
-    if (!document.cookie.includes('sessionStart')) {
-        document.cookie = `sessionStart=${Date.now()}; path=/; SameSite=Strict`;
-    }
+    document.cookie = `sessionStart=${Date.now()}; path=/; SameSite=Strict`;
+
 };
 
 export const getSessionDuration = (): string => {
