@@ -1,110 +1,167 @@
 import { create } from 'zustand';
 import { type Horse, type HorseFormData } from '../types/Horse';
+import * as api from '../api/horseApi';
 
-const initialHorses: Horse[] = [
-  {
-    id: '1',
-    name: 'Bella',
-    breed: 'Andalusian',
-    difficulty: 'Medium',
-    weight: 480,
-    dateOfBirth: '2017-04-12',
-    about: 'Calm and responsive mare, great for intermediate riders. Excellent in lateral work and canter transitions.',
-    isAvailable: true,
-    inTraining: false,
-    recommendedFor: 'Both',
-  },
-  {
-    id: '2',
-    name: 'Daisy',
-    breed: 'Quarter Horse',
-    difficulty: 'Easy',
-    weight: 520,
-    dateOfBirth: '2014-06-01',
-    about: 'Very gentle and patient mare, ideal for beginners and children. Consistent temperament and low daily load.',
-    isAvailable: true,
-    inTraining: false,
-    recommendedFor: 'Both',
-  },
-  {
-    id: '3',
-    name: 'Storm',
-    breed: 'Thoroughbred',
-    difficulty: 'Hard',
-    weight: 550,
-    dateOfBirth: '2019-09-20',
-    about: 'High energy stallion with excellent form. Experienced riders only. Currently in a training program.',
-    isAvailable: false,
-    inTraining: true,
-    recommendedFor: 'Adults',
-  },
-  {
-    id: '4',
-    name: 'Luna',
-    breed: 'Lusitano',
-    difficulty: 'Medium',
-    weight: 490,
-    dateOfBirth: '2015-03-18',
-    about: 'Elegant and steady mare. Performs well in dressage and leisure rides alike.',
-    isAvailable: true,
-    inTraining: false,
-    recommendedFor: 'Adults',
-  },
-  {
-    id: '5',
-    name: 'Rex',
-    breed: 'Hanoverian',
-    difficulty: 'Hard',
-    weight: 600,
-    dateOfBirth: '2018-11-05',
-    about: 'Competition-grade gelding. Requires an advanced rider with jumping experience.',
-    isAvailable: true,
-    inTraining: false,
-    recommendedFor: 'Adults',
-  },
-  {
-    id: '6',
-    name: 'Milo',
-    breed: 'Shetland Pony',
-    difficulty: 'Easy',
-    weight: 300,
-    dateOfBirth: '2016-07-22',
-    about: 'Friendly and small pony, perfect for young children. Very calm under pressure.',
-    isAvailable: true,
-    inTraining: false,
-    recommendedFor: 'Children',
-  },
-];
-
-let nextId = initialHorses.length + 1;
-
-interface HorseStore {
-  horses: Horse[];
-  addHorse: (data: HorseFormData) => void;
-  updateHorse: (id: string, data: HorseFormData) => void;
-  removeHorse: (id: string) => void;
-  getHorseById: (id: string) => Horse | undefined;
+// Operații efectuate offline care trebuie sincronizate când revine conexiunea
+interface PendingOperation {
+    type: 'add' | 'update' | 'delete';
+    localId: string;           // id-ul local (temporar pentru add)
+    serverId?: string;         // id-ul real de pe server (după sync)
+    data?: HorseFormData;
 }
 
+interface HorseStore {
+    horses: Horse[];
+    isLoading: boolean;
+    isOnline: boolean;
+    pendingOps: PendingOperation[];
+
+    // Acțiuni
+    fetchHorses: () => Promise<void>;
+    addHorse: (data: HorseFormData) => Promise<void>;
+    updateHorse: (id: string, data: HorseFormData) => Promise<void>;
+    removeHorse: (id: string) => Promise<void>;
+    getHorseById: (id: string) => Horse | undefined;
+    setOnline: (online: boolean) => void;
+    syncPendingOps: () => Promise<void>;
+}
+
+let tempIdCounter = 1;
+
 export const useHorseStore = create<HorseStore>((set, get) => ({
-  horses: initialHorses,
+    horses: [],
+    isLoading: false,
+    isOnline: navigator.onLine,
+    pendingOps: [],
 
-  addHorse: (data) =>
-    set((state) => ({
-      horses: [...state.horses, { ...data, id: String(nextId++) }],
-    })),
+    // ── FETCH (load all from backend) ─────────────────────────────────────
+    fetchHorses: async () => {
+        set({ isLoading: true });
+        try {
+            const horses = await api.fetchAllHorses();
+            set({ horses, isLoading: false, isOnline: true });
+        } catch {
+            // Backend inaccessibil — rămânem cu ce avem în store (offline mode)
+            set({ isLoading: false, isOnline: false });
+        }
+    },
 
-  updateHorse: (id, data) =>
-    set((state) => ({
-      horses: state.horses.map((h) =>
-        h.id === id ? { ...data, id } : h
-      ),
-    })),
+    // ── ADD ───────────────────────────────────────────────────────────────
+    addHorse: async (data) => {
+        const { isOnline } = get();
 
-  removeHorse: (id) =>
-    set((state) => ({
-      horses: state.horses.filter((h) => h.id !== id),
-    })),
+        if (isOnline) {
+            try {
+                const created = await api.createHorse(data);
+                set((state) => ({ horses: [...state.horses, created] }));
+                return;
+            } catch {
+                set({ isOnline: false });
+            }
+        }
 
-  getHorseById: (id) => get().horses.find((h) => h.id === id),
+        // Offline — adăugăm local cu id temporar
+        const localId = `temp-${tempIdCounter++}`;
+        const tempHorse: Horse = { ...data, id: localId };
+        set((state) => ({
+            horses: [...state.horses, tempHorse],
+            pendingOps: [...state.pendingOps, { type: 'add', localId, data }],
+        }));
+    },
+
+    // ── UPDATE ────────────────────────────────────────────────────────────
+    updateHorse: async (id, data) => {
+        const { isOnline } = get();
+
+        if (isOnline) {
+            try {
+                const updated = await api.updateHorse(id, data);
+                set((state) => ({
+                    horses: state.horses.map((h) => h.id === id ? updated : h),
+                }));
+                return;
+            } catch {
+                set({ isOnline: false });
+            }
+        }
+
+        // Offline — actualizăm local
+        set((state) => ({
+            horses: state.horses.map((h) => h.id === id ? { ...data, id } : h),
+            pendingOps: [...state.pendingOps, { type: 'update', localId: id, data }],
+        }));
+    },
+
+    // ── DELETE ────────────────────────────────────────────────────────────
+    removeHorse: async (id) => {
+        const { isOnline } = get();
+
+        // Optimistic update — ștergem imediat din UI
+        set((state) => ({
+            horses: state.horses.filter((h) => h.id !== id),
+        }));
+
+        if (isOnline) {
+            try {
+                await api.deleteHorse(id);
+                return;
+            } catch {
+                set({ isOnline: false });
+            }
+        }
+
+        // Offline — marcăm pentru sync ulterior (doar dacă nu e id temporar)
+        if (!id.startsWith('temp-')) {
+            set((state) => ({
+                pendingOps: [...state.pendingOps, { type: 'delete', localId: id }],
+            }));
+        }
+    },
+
+    // ── GET BY ID ─────────────────────────────────────────────────────────
+    getHorseById: (id) => get().horses.find((h) => h.id === id),
+
+    // ── NETWORK STATUS ────────────────────────────────────────────────────
+    setOnline: (online) => {
+        set({ isOnline: online });
+        if (online) {
+            get().syncPendingOps();
+        }
+    },
+
+    // ── SYNC PENDING OPS (Silver) ─────────────────────────────────────────
+    syncPendingOps: async () => {
+        const { pendingOps } = get();
+        if (pendingOps.length === 0) return;
+
+        const remaining: PendingOperation[] = [];
+
+        for (const op of pendingOps) {
+            try {
+                if (op.type === 'add' && op.data) {
+                    const created = await api.createHorse(op.data);
+                    // Înlocuim id-ul temporar cu cel real
+                    set((state) => ({
+                        horses: state.horses.map((h) =>
+                            h.id === op.localId ? created : h
+                        ),
+                    }));
+                } else if (op.type === 'update' && op.data) {
+                    const updated = await api.updateHorse(op.localId, op.data);
+                    set((state) => ({
+                        horses: state.horses.map((h) =>
+                            h.id === op.localId ? updated : h
+                        ),
+                    }));
+                } else if (op.type === 'delete') {
+                    await api.deleteHorse(op.localId);
+                }
+            } catch {
+                // Dacă operația eșuează, o păstrăm pentru retry
+                remaining.push(op);
+            }
+        }
+
+        set({ pendingOps: remaining, isOnline: remaining.length === 0 });
+    },
 }));

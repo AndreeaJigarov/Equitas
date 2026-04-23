@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { HorseTable } from '../../components/HorsesComponents/HorseTable/HorseTable';
 import { HorseDetailView } from '../../components/HorsesComponents/HorseDetailView/HorseDetailView';
 import { useHorseStore } from '../../store/useHorseStore';
+import { useNetworkStatus } from '../../hooks/useNetworkStatus';
 import { type HorseFormData } from '../../types/Horse';
 import styles from './HorsesPage.module.css';
 import { setLastViewedHorseId, getLastViewedHorseId, incrementHorseViewCount } from '../../utils/CookieUtils';
@@ -9,72 +10,107 @@ import { setLastViewedHorseId, getLastViewedHorseId, incrementHorseViewCount } f
 export type PanelMode = 'none' | 'view' | 'edit' | 'add';
 
 export const HorsesPage = () => {
-  const { horses, addHorse, updateHorse, removeHorse, getHorseById } = useHorseStore();
-  const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [mode, setMode] = useState<PanelMode>('none');
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+    const { horses, addHorse, updateHorse, removeHorse, getHorseById,
+        fetchHorses, isLoading, setOnline, syncPendingOps, pendingOps } = useHorseStore();
 
+    const [selectedId, setSelectedId] = useState<string | null>(null);
+    const [mode, setMode] = useState<PanelMode>('none');
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
-  // --- COOKIE MONITORING LOGIC ---
-  // On mount, check if there is a "last viewed" horse preference in cookies 
+    const isOnline = useNetworkStatus();
+
+    // ── Sincronizare cu backend la mount ──────────────────────────────────
     useEffect(() => {
-        // Keep your existing cookie check
+        fetchHorses();
+    }, []);
+
+    // ── Detectare schimbare status rețea ──────────────────────────────────
+    useEffect(() => {
+        setOnline(isOnline);
+        if (isOnline && pendingOps.length > 0) {
+            syncPendingOps();
+        }
+    }, [isOnline]);
+
+    // ── Cookie: redeschide ultimul cal vizualizat ─────────────────────────
+    useEffect(() => {
+        if (horses.length === 0) return;
         const savedId = getLastViewedHorseId();
         if (savedId && getHorseById(savedId)) {
             // eslint-disable-next-line react-hooks/set-state-in-effect
             setSelectedId(savedId);
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setMode('view');
         }
+    }, [horses.length]);
 
-        // Add resize listener for Gold responsiveness [cite: 95, 96]
+    // ── Resize listener ───────────────────────────────────────────────────
+    useEffect(() => {
         const handleResize = () => setIsMobile(window.innerWidth <= 768);
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
-    }, [getHorseById]);
+    }, []);
 
-  const selectedHorse = selectedId ? getHorseById(selectedId) : undefined;
+    const selectedHorse = selectedId ? getHorseById(selectedId) : undefined;
 
-  // Modified to save preference whenever a user selects a horse 
     const handleSelectHorse = (id: string) => {
         setSelectedId(id);
         setMode('view');
-        setLastViewedHorseId(id); // Existing Silver activity monitoring
+        setLastViewedHorseId(id);
         incrementHorseViewCount(id);
     };
 
-
-
-
-
-
-
-  // const selectedHorse = selectedId ? getHorseById(selectedId) : undefined;
-
-  // const handleSelectHorse = (id: string) => { setSelectedId(id); setMode('view'); };
-  const handleAddNew = () => { setSelectedId(null); setMode('add'); };
-  const handleEdit = () => { setMode('edit'); };
+    const handleAddNew = () => { setSelectedId(null); setMode('add'); };
+    const handleEdit = () => { setMode('edit'); };
     const handleCancel = () => {
-        // Resetting both mode and selectedId ensures the DetailView
-        // disappears and the HorseTable reappears on mobile.
         setMode('none');
         setSelectedId(null);
-        // 2. Clear the cookie so it doesn't reopen automatically on refresh
         document.cookie = "lastHorseId=; max-age=0; path=/; SameSite=Strict";
     };
-  const handleSubmitAdd = (data: HorseFormData) => {
-    addHorse(data); setMode('none'); setSelectedId(null);
-  };
-  const handleSubmitEdit = (data: HorseFormData) => {
-    if (selectedId) { updateHorse(selectedId, data); setMode('view'); }
-  };
-  const handleDelete = (id: string) => {
-    removeHorse(id); setSelectedId(null); setMode('none');
-  };
 
-    /* HorsesPage.tsx - Replace the return statement */
+    const handleSubmitAdd = async (data: HorseFormData) => {
+        await addHorse(data);
+        setMode('none');
+        setSelectedId(null);
+    };
+
+    const handleSubmitEdit = async (data: HorseFormData) => {
+        if (selectedId) {
+            await updateHorse(selectedId, data);
+            setMode('view');
+        }
+    };
+
+    const handleDelete = async (id: string) => {
+        await removeHorse(id);
+        setSelectedId(null);
+        setMode('none');
+    };
+
+    if (isLoading) {
+        return (
+            <div className={styles.splitWrapper} style={{ alignItems: 'center', justifyContent: 'center' }}>
+                <p style={{ color: 'var(--dark-earth)', fontFamily: 'var(--font-serif)' }}>
+                    Loading horses...
+                </p>
+            </div>
+        );
+    }
+
     return (
         <div className={styles.splitWrapper}>
-            {/* On mobile: Show list ONLY if no horse is selected (mode === 'none') */}
+            {/* Banner offline */}
+            {!isOnline && (
+                <div style={{
+                    position: 'absolute', top: 0, left: 0, right: 0,
+                    background: '#8B5E3C', color: 'white', textAlign: 'center',
+                    padding: '6px', fontSize: '0.85rem', zIndex: 100,
+                }}>
+                    ⚠ Offline mode — changes will sync when connection is restored
+                    {pendingOps.length > 0 && ` (${pendingOps.length} pending)`}
+                </div>
+            )}
+
             {(!isMobile || mode === 'none') && (
                 <div className={styles.leftPanel}>
                     <HorseTable
@@ -86,7 +122,6 @@ export const HorsesPage = () => {
                 </div>
             )}
 
-            {/* On mobile: Show detail panel ONLY if a horse IS selected or adding */}
             {(!isMobile || mode !== 'none') && (
                 <div className={styles.rightPanel}>
                     <HorseDetailView
@@ -96,7 +131,7 @@ export const HorsesPage = () => {
                         onDelete={handleDelete}
                         onSubmitAdd={handleSubmitAdd}
                         onSubmitEdit={handleSubmitEdit}
-                        onCancel={handleCancel} /* This handles the "X" button logic */
+                        onCancel={handleCancel}
                     />
                 </div>
             )}
