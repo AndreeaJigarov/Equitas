@@ -129,6 +129,7 @@ export const useHorseStore = create<HorseStore>((set, get) => ({
         }
     },
 
+
     // ── SYNC PENDING OPS (Silver) ─────────────────────────────────────────
     syncPendingOps: async () => {
         const { pendingOps } = get();

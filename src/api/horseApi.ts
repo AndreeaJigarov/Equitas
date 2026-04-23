@@ -22,7 +22,6 @@ export async function fetchHorsesPage(page: number, size: number = 6): Promise<P
     const res = await fetch(`${BASE_URL}?page=${page}&size=${size}`);
     if (!res.ok) throw new Error('Failed to fetch horses');
     const data = await res.json();
-    // Backend returnează 'available', frontend folosește 'isAvailable' — mapăm
     return {
         ...data,
         content: data.content.map(mapFromBackend),
