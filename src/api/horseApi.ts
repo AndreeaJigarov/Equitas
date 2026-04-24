@@ -59,7 +59,7 @@ export async function deleteHorse(id: string): Promise<void> {
     if (!res.ok) throw new Error('Failed to delete horse');
 }
 
-// Backend folosește 'available', frontend folosește 'isAvailable'
+
 function mapFromBackend(raw: Record<string, unknown>): Horse {
     return {
         id: raw.id as string,

@@ -6,7 +6,7 @@ export const GeneratorControls = () => {
     const [running, setRunning] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    // La mount — verificăm statusul real de pe server
+    // La mount verificam statusul real de pe server
     useEffect(() => {
         fetch(`${API}/status`)
             .then(res => res.json())

@@ -11,7 +11,7 @@ export function useWebSocket() {
 
 
     function connect() {
-        // SockJS fallback — folosim WebSocket raw via endpoint /ws/websocket
+        // SockJS fallback, WebSocket raw via endpoint /ws/websocket
         const ws = new WebSocket(`ws://localhost:8080/ws/websocket`);
         sockRef.current = ws;
 
@@ -23,31 +23,28 @@ export function useWebSocket() {
         ws.onmessage = (event) => {
             const raw: string = event.data;
 
-            // STOMP CONNECTED — subscribe la topic
+            // STOMP CONNECTED
             if (raw.startsWith('CONNECTED')) {
                 ws.send('SUBSCRIBE\nid:sub-0\ndestination:/topic/horses\n\n\0');
                 return;
             }
 
-            // STOMP MESSAGE — parsăm body-ul
+            // STOMP MESSAGE
             if (raw.startsWith('MESSAGE')) {
                 const parts = raw.split('\n\n');
                 if (parts.length >= 2) {
                     try {
                         const body = parts[1].replace('\0', '');
                         const horse = JSON.parse(body) as Horse & { available?: boolean };
-                        // Backend returnează 'available', mapăm la 'isAvailable'
                         const mapped: Horse = {
                             ...horse,
                             isAvailable: horse.available ?? horse.isAvailable,
                         };
                         useHorseStore.setState((state) => {
-                            // Nu adăuga dacă ID-ul există deja
                             if (state.horses.some(h => h.id === mapped.id)) return state;
                             return { horses: [...state.horses, mapped] };
                         });
                     } catch {
-                        // JSON parse error — ignorăm
                     }
                 }
             }
@@ -58,7 +55,7 @@ export function useWebSocket() {
         };
 
         ws.onclose = () => {
-            // Reconectare după 3 secunde
+            // Reconectare dupa 3 secunde
             reconnectTimer.current = setTimeout(connect, 3000);
         };
     }
