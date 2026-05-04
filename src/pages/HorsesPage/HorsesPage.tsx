@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { HorseTable } from '../../components/HorsesComponents/HorseTable/HorseTable';
 import { HorseDetailView } from '../../components/HorsesComponents/HorseDetailView/HorseDetailView';
-import { GeneratorControls } from '../../components/GeneratorControls/GeneratorControls';
+//import { GeneratorControls } from '../../components/GeneratorControls/GeneratorControls';
 import { useHorseStore } from '../../store/useHorseStore';
-import { useWebSocket } from '../../hooks/useWebSocket';
+//import { useWebSocket } from '../../hooks/useWebSocket';
 import { type HorseFormData } from '../../types/Horse';
 import styles from './HorsesPage.module.css';
 import { setLastViewedHorseId, getLastViewedHorseId, incrementHorseViewCount } from '../../utils/CookieUtils';
@@ -17,8 +17,8 @@ export const HorsesPage = () => {
     const [mode, setMode] = useState<PanelMode>('none');
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
-    // WebSocket — primim cai noi în timp real de la generator
-    useWebSocket();
+    // WebSocket primim cai noi în timp real de la generator
+    // useWebSocket(); - scos momentan
 
     // ── Cookie: redeschide ultimul cal vizualizat ─────────────────────────
     useEffect(() => {
@@ -71,7 +71,7 @@ export const HorsesPage = () => {
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-            <GeneratorControls />
+            {/*<GeneratorControls />*/}
 
             <div className={styles.splitWrapper}>
                 {(!isMobile || mode === 'none') && (
