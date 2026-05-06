@@ -1,27 +1,33 @@
 import React, { useState } from 'react';
 import styles from './AuthForm.module.css';
 import logo_lightBrown from "../../assets/logo/logo_lightBrown.png";
+import { useAuthStore } from '../../store/useAuthStore';
 
 interface LoginProps {
-    onLogin: () => void; // Added prop for redirection
+    onLogin: () => void; // Called after successful auth — parent handles redirect
 }
 
 export const LoginForm = ({ onLogin }: LoginProps) => {
-    const [mobile, setMobile] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const login = useAuthStore((s) => s.login);
+    const isLoading = useAuthStore((s) => s.isLoading);
+
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!mobile || !password) {
-            setError('Mobile and Password are required.');
+        if (!username || !password) {
+            setError('Username and Password are required.');
             return;
         }
-        if (!/^\d{10}$/.test(mobile)) {
-            setError('Please enter a valid 10-digit mobile number.');
-            return;
+        setError('');
+        try {
+            await login({ username, password });
+            onLogin();
+        } catch (err) {
+            setError(err instanceof Error ? err.message : 'Login failed');
         }
-        onLogin();
     };
 
     return (
@@ -33,13 +39,14 @@ export const LoginForm = ({ onLogin }: LoginProps) => {
                 </div>
 
                 <div className={styles.fieldGroup}>
-                    <label className={styles.label}>Mobile Number</label>
+                    <label className={styles.label}>Username</label>
                     <input
                         type="text"
                         className={styles.input}
-                        value={mobile}
-                        onChange={(e) => {setMobile(e.target.value); setError('');}}
-                        placeholder="e.g. 07xxxxxxxx"
+                        value={username}
+                        onChange={(e) => { setUsername(e.target.value); setError(''); }}
+                        placeholder="e.g. admin"
+                        autoComplete="username"
                     />
                 </div>
                 <div className={styles.fieldGroup}>
@@ -48,13 +55,16 @@ export const LoginForm = ({ onLogin }: LoginProps) => {
                         type="password"
                         className={styles.input}
                         value={password}
-                        onChange={(e) => {setPassword(e.target.value); setError('');}}
+                        onChange={(e) => { setPassword(e.target.value); setError(''); }}
+                        autoComplete="current-password"
                     />
                 </div>
 
                 {error && <p className={styles.errorText}>{error}</p>}
 
-                <button type="submit" className={styles.btnSubmit}>Sign In</button>
+                <button type="submit" className={styles.btnSubmit} disabled={isLoading}>
+                    {isLoading ? 'Signing in...' : 'Sign In'}
+                </button>
             </form>
         </div>
     );

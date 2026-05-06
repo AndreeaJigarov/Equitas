@@ -5,6 +5,7 @@ import { type PanelMode } from '../../../pages/HorsesPage/HorsesPage';
 import styles from './HorseDetailView.module.css';
 import { getHorseViewCount } from '../../../utils/CookieUtils';
 import {AnimatedHorse} from "../AnimatedHorse/AnimatedHorse.tsx";
+import { useAuthStore } from '../../../store/useAuthStore';
 
 // This component handles the right-side panel of the Horses page, showing either:
 // - an empty state when no horse is selected
@@ -65,6 +66,10 @@ export const HorseDetailView = ({
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+  const canUpdate = useAuthStore((s) => s.hasPermission('UPDATE_HORSE'));
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+  const canDelete = useAuthStore((s) => s.hasPermission('DELETE_HORSE'));
   //Purpose: Displays the horse's identity and status.
   const statusBadge = () => {
     if (horse.inTraining)
@@ -124,16 +129,25 @@ export const HorseDetailView = ({
       </div>
 
 
-      {/* Footer actions */}
+      {/* Footer actions — gated by permission (admin only by default) */}
       <div className={styles.viewFooter}>
         {!showDeleteConfirm ? (
           <>
-            <button className={styles.btnDelete} onClick={() => setShowDeleteConfirm(true)}>
-              Delete
-            </button>
-            <button className={styles.btnEdit} onClick={onEdit}>
-              Edit
-            </button>
+            {canDelete && (
+              <button className={styles.btnDelete} onClick={() => setShowDeleteConfirm(true)}>
+                Delete
+              </button>
+            )}
+            {canUpdate && (
+              <button className={styles.btnEdit} onClick={onEdit}>
+                Edit
+              </button>
+            )}
+            {!canUpdate && !canDelete && (
+              <span style={{ opacity: 0.6, fontStyle: 'italic' }}>
+                Read-only view
+              </span>
+            )}
           </>
         ) : (
           <div className={styles.confirmRow}>

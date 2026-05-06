@@ -5,8 +5,7 @@ export const LoginPage = () => {
     const navigate = useNavigate();
 
     const handleLoginSuccess = () => {
-        // In Assignment 1, we just redirect to the horses list
-        navigate('/home');
+        navigate('/horses');
     };
 
     return (

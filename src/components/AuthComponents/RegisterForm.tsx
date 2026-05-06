@@ -1,7 +1,7 @@
-
 import React, { useState } from 'react';
 import styles from './AuthForm.module.css';
 import logo_lightBrown from "../../assets/logo/logo_lightBrown.png";
+import { useAuthStore } from '../../store/useAuthStore';
 
 interface RegisterProps {
     onRegister: () => void;
@@ -10,53 +10,53 @@ interface RegisterProps {
 export const RegisterForm = ({ onRegister }: RegisterProps) => {
     const [acceptedDisclaimer, setAcceptedDisclaimer] = useState(false);
     const [formData, setFormData] = useState({
-        fullName: '',
-        mobile: '',
-        weight: '',
-        skillLevel: 'Beginner',
-        dob: ''
+        username: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
     });
     const [error, setError] = useState('');
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const register = useAuthStore((s) => s.register);
+    const isLoading = useAuthStore((s) => s.isLoading);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
-        setError(''); // Clear error when user types
+        setError('');
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        // --- INTUITIVE CHECKS ---
-        const { fullName, mobile, weight, dob } = formData;
+        const { username, email, password, confirmPassword } = formData;
 
-        // empty field check
-        if (!fullName || !mobile || !weight || !dob) {
+        if (!username || !email || !password) {
             setError('Please fill in all fields.');
             return;
         }
-
-        //weight > 0
-        if (Number(weight) <= 0) {
-            setError('Weight must be a positive number.');
+        if (username.length < 3) {
+            setError('Username must be at least 3 characters.');
             return;
         }
-
-        // mobile must be valid (10 digits) [cite: 94, 96]
-        if (!/^\d{10}$/.test(mobile)) {
-            setError('Mobile number must be exactly 10 digits.');
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            setError('Please enter a valid email address.');
             return;
         }
-
-        // DOB cannot be in the future
-        const selectedDate = new Date(dob);
-        const today = new Date();
-        if (selectedDate > today) {
-            setError('Date of Birth cannot be in the future.');
+        if (password.length < 6) {
+            setError('Password must be at least 6 characters.');
             return;
         }
+        if (password !== confirmPassword) {
+            setError('Passwords do not match.');
+            return;
+        }
+        if (!acceptedDisclaimer) return;
 
-        if (acceptedDisclaimer) {
+        try {
+            await register({ username, email, password });
             onRegister();
+        } catch (err) {
+            setError(err instanceof Error ? err.message : 'Registration failed');
         }
     };
 
@@ -70,31 +70,29 @@ export const RegisterForm = ({ onRegister }: RegisterProps) => {
 
                 <div className={styles.grid}>
                     <div className={styles.field}>
-                        <label className={styles.label}>Full Name</label>
-                        <input name="fullName" type="text" className={styles.input} onChange={handleChange} />
+                        <label className={styles.label}>Username</label>
+                        <input name="username" type="text" className={styles.input}
+                               value={formData.username} onChange={handleChange}
+                               autoComplete="username" />
                     </div>
                     <div className={styles.field}>
-                        <label className={styles.label}>Mobile No.</label>
-                        <input name="mobile" type="text" className={styles.input} onChange={handleChange} />
+                        <label className={styles.label}>Email</label>
+                        <input name="email" type="email" className={styles.input}
+                               value={formData.email} onChange={handleChange}
+                               autoComplete="email" />
                     </div>
                     <div className={styles.field}>
-                        <label className={styles.label}>Weight (kg)</label>
-                        <input name="weight" type="number" className={styles.input} onChange={handleChange} />
+                        <label className={styles.label}>Password</label>
+                        <input name="password" type="password" className={styles.input}
+                               value={formData.password} onChange={handleChange}
+                               autoComplete="new-password" />
                     </div>
                     <div className={styles.field}>
-                        <label className={styles.label}>Skill Level</label>
-                        <select name="skillLevel" className={styles.select} onChange={handleChange}>
-                            <option>Beginner</option>
-                            <option>Intermediate</option>
-                            <option>Advanced</option>
-                        </select>
+                        <label className={styles.label}>Confirm Password</label>
+                        <input name="confirmPassword" type="password" className={styles.input}
+                               value={formData.confirmPassword} onChange={handleChange}
+                               autoComplete="new-password" />
                     </div>
-                </div>
-
-                {/* --- ADDED DOB FIELD --- */}
-                <div className={styles.centeredField}>
-                    <label className={styles.label}>Date of Birth</label>
-                    <input name="dob" type="date" className={styles.input} onChange={handleChange} />
                 </div>
 
                 {error && <p className={styles.errorText}>{error}</p>}
@@ -110,8 +108,9 @@ export const RegisterForm = ({ onRegister }: RegisterProps) => {
                     </label>
                 </div>
 
-                <button type="submit" className={styles.btnSubmit} disabled={!acceptedDisclaimer}>
-                    Register
+                <button type="submit" className={styles.btnSubmit}
+                        disabled={!acceptedDisclaimer || isLoading}>
+                    {isLoading ? 'Creating account...' : 'Register'}
                 </button>
             </form>
         </div>

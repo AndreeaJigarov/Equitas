@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { type Horse } from '../../../types/Horse';
 import styles from './HorseTable.module.css';
+import { useAuthStore } from '../../../store/useAuthStore';
 
 interface HorseTableProps {
     horses: Horse [];
@@ -13,6 +14,7 @@ const PAGE_SIZE = 6;
 
 export const HorseTable = ({ horses, selectedId, onSelect, onAddNew }: HorseTableProps) => {
     const [currentPage, setCurrentPage] = useState(1);
+    const canCreate = useAuthStore((s) => s.hasPermission('CREATE_HORSE'));
 
     const totalPages = Math.max(1, Math.ceil(horses.length / PAGE_SIZE));
 
@@ -25,7 +27,9 @@ export const HorseTable = ({ horses, selectedId, onSelect, onAddNew }: HorseTabl
         <div className={styles.panel}>
             <div className={styles.header}>
                 <h2 className={styles.title}>Horses</h2>
-                <button className={styles.btnAdd} onClick={onAddNew}>add new +</button>
+                {canCreate && (
+                    <button className={styles.btnAdd} onClick={onAddNew}>add new +</button>
+                )}
             </div>
 
             <div className={styles.list}>
