@@ -1,6 +1,6 @@
 import { type Horse, type HorseFormData } from '../types/Horse';
 
-const BASE_URL = 'http://localhost:8080/api/horses';
+const BASE_URL = `${import.meta.env.VITE_API_URL ?? 'http://localhost:8080'}/api/horses`;
 
 export interface PagedResponse {
     content: Horse[];
