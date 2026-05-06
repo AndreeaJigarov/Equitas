@@ -1,5 +1,5 @@
 import {NavLink, useNavigate} from 'react-router-dom';
-import styles from './Navbar.module.css';
+import styles from './NavBar.module.css';
 import logo_White from "../../assets/logo/logo_White.png";
 
 export const AdminNavbar = () => {
