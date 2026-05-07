@@ -7,6 +7,7 @@ import { RegisterPage } from "./pages/AuthPages/RegisterPage.tsx";
 import { LoginPage } from "./pages/AuthPages/LoginPage.tsx";
 import { StatisticsPage } from "./pages/StatisticsPage/StatisticsPage.tsx";
 import { ChatPage } from "./pages/ChatPage/ChatPage.tsx";
+import { AdminPage } from "./pages/AdminPage/AdminPage.tsx";
 import { ProtectedRoute } from './components/AuthComponents/ProtectedRoute';
 
 function App() {
@@ -23,6 +24,12 @@ function App() {
                     <Route path="/horses" element={<HorsesPage />} />
                     <Route path="/statistics" element={<StatisticsPage />} />
                     <Route path="/chat" element={<ChatPage />} />
+                </Route>
+                {/* Admin-only area: audit logs & observation list */}
+                <Route element={<ProtectedRoute requireRole="ADMIN" />}>
+                    <Route element={<AdminLayout />}>
+                        <Route path="/admin" element={<AdminPage />} />
+                    </Route>
                 </Route>
             </Route>
         </Routes>

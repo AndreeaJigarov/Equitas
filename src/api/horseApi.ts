@@ -1,4 +1,5 @@
 import { type Horse, type HorseFormData } from '../types/Horse';
+import { authedFetch } from './httpClient';
 
 const BASE_URL = `${import.meta.env.VITE_API_URL ?? 'http://localhost:8080'}/api/horses`;
 
@@ -19,7 +20,7 @@ export async function fetchAllHorses(): Promise<Horse[]> {
 }
 
 export async function fetchHorsesPage(page: number, size: number = 6): Promise<PagedResponse> {
-    const res = await fetch(`${BASE_URL}?page=${page}&size=${size}`);
+    const res = await authedFetch(`${BASE_URL}?page=${page}&size=${size}`);
     if (!res.ok) throw new Error('Failed to fetch horses');
     const data = await res.json();
     return {
@@ -29,13 +30,13 @@ export async function fetchHorsesPage(page: number, size: number = 6): Promise<P
 }
 
 export async function fetchHorseById(id: string): Promise<Horse> {
-    const res = await fetch(`${BASE_URL}/${id}`);
+    const res = await authedFetch(`${BASE_URL}/${id}`);
     if (!res.ok) throw new Error(`Horse ${id} not found`);
     return mapFromBackend(await res.json());
 }
 
 export async function createHorse(data: HorseFormData): Promise<Horse> {
-    const res = await fetch(BASE_URL, {
+    const res = await authedFetch(BASE_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(mapToBackend(data)),
@@ -45,7 +46,7 @@ export async function createHorse(data: HorseFormData): Promise<Horse> {
 }
 
 export async function updateHorse(id: string, data: HorseFormData): Promise<Horse> {
-    const res = await fetch(`${BASE_URL}/${id}`, {
+    const res = await authedFetch(`${BASE_URL}/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(mapToBackend(data)),
@@ -55,7 +56,7 @@ export async function updateHorse(id: string, data: HorseFormData): Promise<Hors
 }
 
 export async function deleteHorse(id: string): Promise<void> {
-    const res = await fetch(`${BASE_URL}/${id}`, { method: 'DELETE' });
+    const res = await authedFetch(`${BASE_URL}/${id}`, { method: 'DELETE' });
     if (!res.ok) throw new Error('Failed to delete horse');
 }
 

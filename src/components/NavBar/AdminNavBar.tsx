@@ -51,6 +51,14 @@ export const AdminNavbar = () => {
                 >
                     Chat
                 </NavLink>
+                {user?.roles.includes('ADMIN') && (
+                    <NavLink
+                        to="/admin"
+                        className={({ isActive }) => `${styles.navLink} ${isActive ? styles.active : ''}`}
+                    >
+                        Admin
+                    </NavLink>
+                )}
 
                 {user && (
                     <span className={styles.navLink} style={{ cursor: 'default', opacity: 0.85 }}>

@@ -1,3 +1,5 @@
+import { authedFetch } from './httpClient';
+
 const BASE_URL = `${import.meta.env.VITE_API_URL ?? 'http://localhost:8080'}/api/chat`;
 
 export interface ChatMessage {
@@ -9,7 +11,7 @@ export interface ChatMessage {
 }
 
 export async function fetchChatHistory(limit: number = 100): Promise<ChatMessage[]> {
-    const res = await fetch(`${BASE_URL}/history?limit=${limit}`);
+    const res = await authedFetch(`${BASE_URL}/history?limit=${limit}`);
     if (!res.ok) throw new Error('Failed to load chat history');
     return res.json();
 }
