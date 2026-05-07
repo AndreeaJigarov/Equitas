@@ -1,0 +1,98 @@
+.adminWrapper {
+    padding: 1.5rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    color: var(--dark-earth, #5a3e2b);
+}
+
+.section {
+    background: white;
+    border: 1px solid rgba(139, 94, 60, 0.15);
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.sectionHeader {
+    padding: 0.9rem 1.25rem;
+    background: var(--dark-earth, #5a3e2b);
+    color: white;
+    font-family: var(--font-serif, serif);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sectionHeader h2 { margin: 0; font-size: 1.1rem; }
+
+.refreshBtn {
+    background: rgba(255,255,255,0.15);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 6px;
+    padding: 0.3rem 0.8rem;
+    cursor: pointer;
+    font-size: 0.85rem;
+}
+.refreshBtn:hover { background: rgba(255,255,255,0.25); }
+
+.tableWrap { max-height: 420px; overflow: auto; }
+
+table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+th, td {
+    padding: 0.55rem 0.85rem;
+    text-align: left;
+    border-bottom: 1px solid rgba(139, 94, 60, 0.08);
+    vertical-align: top;
+}
+th {
+    background: #faf6f1;
+    position: sticky;
+    top: 0;
+    font-weight: 600;
+    color: var(--dark-earth, #5a3e2b);
+}
+
+.badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+.badgeAdmin   { background: #fde68a; color: #78350f; }
+.badgeUser    { background: #ddd6fe; color: #4338ca; }
+.badgeAnon    { background: #e5e7eb; color: #374151; }
+.badgeOk      { background: #dcfce7; color: #166534; }
+.badgeFail    { background: #fee2e2; color: #991b1b; }
+.badgeRule    { background: #ffedd5; color: #9a3412; }
+
+.empty {
+    padding: 2rem;
+    text-align: center;
+    opacity: 0.55;
+    font-style: italic;
+}
+
+.resolveBtn {
+    background: var(--dark-earth, #5a3e2b);
+    color: white;
+    border: none;
+    padding: 0.3rem 0.7rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.78rem;
+}
+.resolveBtn:hover { opacity: 0.85; }
+.resolved { opacity: 0.5; font-style: italic; }
+
+.errorBanner {
+    background: #fee2e2;
+    color: #991b1b;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
